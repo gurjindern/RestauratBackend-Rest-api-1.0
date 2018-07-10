@@ -1,11 +1,26 @@
 package com.gurjinder.tandooriBackend.model;
 
-public class   FoodItem {
+
+import java.util.List;
+
+public class FoodItem {
+
     private int id;
     private String name;
     private double price;
     private String description;
+    private List<Integer> categoryIds;
     private boolean availabily;
+
+
+
+    public List<Integer> getCategoryIds() {
+        return categoryIds;
+    }
+
+    public void setCategoryIds(List<Integer> categoryIds) {
+        this.categoryIds = categoryIds;
+    }
 
     public FoodItem() {
     }
