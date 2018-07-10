@@ -1,6 +1,6 @@
 package com.gurjinder.tandooriBackend.model;
 
-public class FoodItem {
+public class   FoodItem {
     private int id;
     private String name;
     private double price;

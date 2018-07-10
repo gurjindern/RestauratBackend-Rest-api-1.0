@@ -12,15 +12,19 @@ import java.util.Map;
 public class FoodItemService {
 
 
-    public Map<Integer,FoodItem> foodItems= TempDb.getFoodItemList();
+    public Map<Integer, FoodItem> foodItems = TempDb.getFoodItemList();
 
 
-
-    public List<FoodItem> getMessages(){
+    public List<FoodItem> getMessages() {
         return new ArrayList<FoodItem>(foodItems.values());
-    };
+    }
+
+    ;
 
 
 }
+
+
+
 
 
