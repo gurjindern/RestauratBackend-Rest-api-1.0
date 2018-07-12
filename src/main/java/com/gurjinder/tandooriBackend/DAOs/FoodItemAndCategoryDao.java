@@ -68,10 +68,6 @@ public class FoodItemAndCategoryDao {
 
 
                       }
-
-
-
-
                       return foodItems;
                   }
               });

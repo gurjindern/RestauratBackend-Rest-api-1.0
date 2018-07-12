@@ -41,16 +41,8 @@ public class FoodItemController {
                 return foodCategories;
             }
 
-            public void setFoodCategories(List<FoodCategory> foodCategories) {
-                this.foodCategories = foodCategories;
-            }
-
             public String getStatus() {
                 return status;
-            }
-
-            public void setStatus(String status) {
-                this.status = status;
             }
         }
 
