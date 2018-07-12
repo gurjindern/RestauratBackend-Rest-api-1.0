@@ -1,5 +1,6 @@
 package com.gurjinder.tandooriBackend.web;
 
+import com.gurjinder.tandooriBackend.model.FoodCategory;
 import com.gurjinder.tandooriBackend.model.FoodItem;
 import com.gurjinder.tandooriBackend.service.FoodItemService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,10 +22,39 @@ public class FoodItemController {
     @Autowired
     private FoodItemService service;
     @GetMapping
-    public ResponseEntity<?> getFoodItems(){
+    public ResponseEntity<List<FoodItem>> getFoodItems(){
 
         HttpHeaders headers=new HttpHeaders();
         headers.setContentType(APPLICATION_JSON);
-        return new ResponseEntity<List<FoodItem>>(service.getMessages(),headers,HttpStatus.OK);
+        return new ResponseEntity<>(service.getFoodItems(),headers,HttpStatus.OK);
+    }
+    @GetMapping("categories")
+    public ResponseEntity<?> getcategories(){
+
+        HttpHeaders headers=new HttpHeaders();
+        headers.setContentType(APPLICATION_JSON);
+        return new ResponseEntity<>(new Response(){
+            private List<FoodCategory> foodCategories=service.getFoodCategories();
+            private String status="Success :)";
+
+            public List<FoodCategory> getFoodCategories() {
+                return foodCategories;
+            }
+
+            public void setFoodCategories(List<FoodCategory> foodCategories) {
+                this.foodCategories = foodCategories;
+            }
+
+            public String getStatus() {
+                return status;
+            }
+
+            public void setStatus(String status) {
+                this.status = status;
+            }
+        }
+
+
+        ,headers,HttpStatus.OK);
     }
 }

@@ -3,6 +3,7 @@ buildscript {
 		springBootVersion = '2.0.2.RELEASE'
 	}
 	repositories {
+
 		mavenCentral()
 	}
 	dependencies {
@@ -19,14 +20,24 @@ group = 'com.gurjinder'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = 1.8
 
+
 repositories {
+
 	mavenCentral()
+	maven{
+		url uri('C:\\Users\\gurji\\.m2\\repository')
+	}
+
 }
 
 
 dependencies {
 	compile('org.springframework.boot:spring-boot-starter-actuator')
 	compile('org.springframework.boot:spring-boot-starter-web')
+	compile('org.springframework.boot:spring-boot-starter-jdbc')
+	compile('com.oracle:ojdbc8:12.2.0.1.0')
+
 
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 }
+

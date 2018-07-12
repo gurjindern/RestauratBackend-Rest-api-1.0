@@ -3,7 +3,7 @@ package com.gurjinder.tandooriBackend.model;
 public class FoodCategory {
     private int id;
     private String name;
-    private boolean active;
+    private String description ;
 
     public int getId() {
         return id;
@@ -21,11 +21,29 @@ public class FoodCategory {
         this.name = name;
     }
 
-    public boolean isActive() {
-        return active;
+    public String getDescription() {
+        return description;
     }
 
-    public void setActive(boolean active) {
-        this.active = active;
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    @Override
+    public String toString() {
+        return "FoodCategory{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                '}';
+    }
+
+    public FoodCategory(int id, String name, String description) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+    }
+
+    public FoodCategory() {
     }
 }

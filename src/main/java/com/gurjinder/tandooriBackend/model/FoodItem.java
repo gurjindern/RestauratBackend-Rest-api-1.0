@@ -3,7 +3,7 @@ package com.gurjinder.tandooriBackend.model;
 
 import java.util.List;
 
-public class FoodItem {
+public class FoodItem implements Cloneable {
 
     private int id;
     private String name;
@@ -73,6 +73,8 @@ public class FoodItem {
         this.availabily = availabily;
     }
 
-
-
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
 }
