@@ -1,8 +1,13 @@
 package com.gurjinder.tandooriBackend.model;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+import javax.validation.constraints.NotNull;
+
 public class FoodCategory {
     private int id;
     private String name;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String description ;
 
     public int getId() {

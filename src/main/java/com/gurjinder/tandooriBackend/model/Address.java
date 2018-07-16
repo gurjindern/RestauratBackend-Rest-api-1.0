@@ -3,14 +3,15 @@ package com.gurjinder.tandooriBackend.model;
 public class Address {
 
     private int id;
-    private int userId;
-    private int buildingNumber;
+    private String buildingNumber;
     private String streetName;
-    private int apt;
+    private String apt;
     private String city;
     private String province;
     private String postalCode;
-    private String country;
+    private boolean active;
+  //  private String country;
+
 
     public int getId() {
         return id;
@@ -20,19 +21,11 @@ public class Address {
         this.id = id;
     }
 
-    public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
-
-    public int getBuildingNumber() {
+    public String getBuildingNumber() {
         return buildingNumber;
     }
 
-    public void setBuildingNumber(int buildingNumber) {
+    public void setBuildingNumber(String buildingNumber) {
         this.buildingNumber = buildingNumber;
     }
 
@@ -44,11 +37,11 @@ public class Address {
         this.streetName = streetName;
     }
 
-    public int getApt() {
+    public String getApt() {
         return apt;
     }
 
-    public void setApt(int apt) {
+    public void setApt(String apt) {
         this.apt = apt;
     }
 
@@ -76,11 +69,11 @@ public class Address {
         this.postalCode = postalCode;
     }
 
-    public String getCountry() {
-        return country;
+    public boolean isActive() {
+        return active;
     }
 
-    public void setCountry(String country) {
-        this.country = country;
+    public void setActive(boolean active) {
+        this.active = active;
     }
 }

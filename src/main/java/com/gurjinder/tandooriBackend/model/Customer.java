@@ -1,6 +1,6 @@
 package com.gurjinder.tandooriBackend.model;
 
-public class customer extends User {
+public class Customer extends User {
     private Address address;
     private int numberOfOrders;
 

@@ -1,5 +1,6 @@
 package com.gurjinder.tandooriBackend.web;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.gurjinder.tandooriBackend.model.FoodCategory;
 import com.gurjinder.tandooriBackend.model.FoodItem;
 import com.gurjinder.tandooriBackend.service.FoodItemService;
@@ -21,21 +22,39 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 public class FoodItemController {
     @Autowired
     private FoodItemService service;
-    @GetMapping
-    public ResponseEntity<List<FoodItem>> getFoodItems(){
 
-        HttpHeaders headers=new HttpHeaders();
-        headers.setContentType(APPLICATION_JSON);
-        return new ResponseEntity<>(service.getFoodItems(),headers,HttpStatus.OK);
-    }
-    @GetMapping("categories")
-    public ResponseEntity<?> getcategories(){
+
+    @GetMapping
+    public ResponseEntity<Response> getFoodItems(){
 
         HttpHeaders headers=new HttpHeaders();
         headers.setContentType(APPLICATION_JSON);
         return new ResponseEntity<>(new Response(){
-            private List<FoodCategory> foodCategories=service.getFoodCategories();
+
             private String status="Success :)";
+            private List<FoodItem> foodItems=service.getFoodItems();
+
+            public String getStatus() {
+                return status;
+            }
+
+            public List<FoodItem> getFoodItems() {
+                return foodItems;
+            }
+        },headers,HttpStatus.OK);
+    }
+
+
+
+    @GetMapping("categories")
+    public ResponseEntity<Response> getcategories(){
+
+        HttpHeaders headers=new HttpHeaders();
+        headers.setContentType(APPLICATION_JSON);
+        return new ResponseEntity<>(new Response(){
+            private String status="Success :)";
+            private List<FoodCategory> foodCategories=service.getFoodCategories();
+
 
             public List<FoodCategory> getFoodCategories() {
                 return foodCategories;

@@ -6,6 +6,7 @@ public abstract class User {
     private String firstName;
     private String lastName;
     private String phoneNumber;
+    private String password;
     private String emailId;
     private boolean active;
 
@@ -47,6 +48,14 @@ public abstract class User {
 
     public void setEmailId(String emailId) {
         this.emailId = emailId;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public boolean isActive() {
