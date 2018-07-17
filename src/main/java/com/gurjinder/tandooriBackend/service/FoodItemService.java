@@ -16,6 +16,10 @@ public class FoodItemService {
 
     @Autowired
     private FoodItemAndCategoryDao itemAndCategoryDao;
+
+
+
+
     public List<FoodItem> getFoodItems() {
         return itemAndCategoryDao.getAllFoodIItems();
     }

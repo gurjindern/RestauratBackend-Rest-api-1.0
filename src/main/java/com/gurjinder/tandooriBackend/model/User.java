@@ -1,13 +1,16 @@
 package com.gurjinder.tandooriBackend.model;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+@JsonInclude(JsonInclude.Include.NON_DEFAULT)
 public abstract class User {
 
     private int id;
     private String firstName;
     private String lastName;
     private String phoneNumber;
-    private String password;
     private String emailId;
+    private String password;
     private boolean active;
 
     public int getId() {

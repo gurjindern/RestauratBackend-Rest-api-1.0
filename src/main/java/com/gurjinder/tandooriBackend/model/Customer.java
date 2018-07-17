@@ -1,6 +1,9 @@
 package com.gurjinder.tandooriBackend.model;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 public class Customer extends User {
+
     private Address address;
     private int numberOfOrders;
 

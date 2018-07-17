@@ -20,7 +20,7 @@ public class FoodItemAndCategoryDao {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-  public List<FoodItem>  getAllFoodIItems(){
+    public List<FoodItem>  getAllFoodIItems(){
 
       return jdbcTemplate.query("select * from FOOD_ITEMS ft,ITEM_CATEGORIES  ic where ft.ID=ic.FOOD_ITEM_ID",
               new ResultSetExtractor<List<FoodItem>>() {
@@ -73,14 +73,20 @@ public class FoodItemAndCategoryDao {
               });
 
   }
-  public List<FoodCategory> getAllCategories(){
+
+
+    public List<FoodCategory> getAllCategories(){
         return jdbcTemplate.query("select * from categories",
                 new BeanPropertyRowMapper<FoodCategory>(FoodCategory.class));
     }
+
+
     public String getbyid(){
         return (String)jdbcTemplate.queryForObject("select name from categories where id=1",String.class);
     }
-   public void  test() {
+
+
+    public void  test() {
      // jdbcTemplate.execute("drop table categories");
-  }
+    }
 }
