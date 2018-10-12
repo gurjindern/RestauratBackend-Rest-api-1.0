@@ -10,6 +10,15 @@ public class FoodCategory {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String description ;
 
+    public FoodCategory(int id, String name, String description) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+    }
+
+    public FoodCategory() {
+    }
+
     public int getId() {
         return id;
     }
@@ -34,21 +43,7 @@ public class FoodCategory {
         this.description = description;
     }
 
-    @Override
-    public String toString() {
-        return "FoodCategory{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                '}';
-    }
 
-    public FoodCategory(int id, String name, String description) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-    }
 
-    public FoodCategory() {
-    }
+
 }

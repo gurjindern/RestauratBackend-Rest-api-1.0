@@ -2,18 +2,20 @@ package com.gurjinder.tandooriBackend.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
-
+@JsonInclude(JsonInclude.Include.NON_DEFAULT)
 public class Order {
 
     private int id;
+
     private long timeSubmitted;
-    @JsonInclude(JsonInclude.Include.NON_DEFAULT)
+
     private long timeAccepted;
     private boolean accepted;
     private Customer Customer;
     private List<FoodItem> foodItems;
-    private boolean cancelled;
+    private boolean rejected;
 
     public int getId() {
         return id;
@@ -63,11 +65,11 @@ public class Order {
         this.foodItems = foodItems;
     }
 
-    public boolean isCancelled() {
-        return cancelled;
+    public boolean isRejected() {
+        return rejected;
     }
 
-    public void setCancelled(boolean cancelled) {
-        this.cancelled = cancelled;
+    public void setRejected(boolean rejected) {
+        this.rejected = rejected;
     }
 }

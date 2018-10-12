@@ -21,6 +21,7 @@ public class FoodItemService {
 
 
     public List<FoodItem> getFoodItems() {
+
         return itemAndCategoryDao.getAllFoodIItems();
     }
 

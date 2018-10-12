@@ -16,7 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class FoodItemAndCategoryDao {
+public class
+FoodItemAndCategoryDao {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
@@ -80,9 +81,8 @@ public class FoodItemAndCategoryDao {
                 new BeanPropertyRowMapper<FoodCategory>(FoodCategory.class));
     }
 
-
     public String getbyid(){
-        return (String)jdbcTemplate.queryForObject("select name from categories where id=1",String.class);
+        return (String)jdbcTemplate.queryForObject("select name from categories where id=?",new  Object[]{1},String.class);
     }
 
 

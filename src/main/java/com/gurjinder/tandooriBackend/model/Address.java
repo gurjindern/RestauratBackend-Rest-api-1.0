@@ -2,18 +2,23 @@ package com.gurjinder.tandooriBackend.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import javax.validation.constraints.NotNull;
+
 @JsonInclude(JsonInclude.Include.NON_DEFAULT)
 public class Address {
 
     private int id;
+    @NotNull
     private String buildingNumber;
+    @NotNull
     private String streetName;
     private String apt;
     private String city;
     private String province;
+    @NotNull
     private String postalCode;
     private boolean active;
-  //  private String country;
+    //  private String country;
 
 
     public int getId() {

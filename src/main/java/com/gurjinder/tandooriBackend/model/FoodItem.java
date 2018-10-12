@@ -1,8 +1,10 @@
 package com.gurjinder.tandooriBackend.model;
 
 
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.util.List;
+@JsonInclude(JsonInclude.Include.NON_DEFAULT)
 public class FoodItem implements Cloneable {
 
     private int id;
@@ -14,13 +16,7 @@ public class FoodItem implements Cloneable {
 
 
 
-    public List<Integer> getCategoryIds() {
-        return categoryIds;
-    }
 
-    public void setCategoryIds(List<Integer> categoryIds) {
-        this.categoryIds = categoryIds;
-    }
 
     public FoodItem() {
     }
@@ -63,6 +59,13 @@ public class FoodItem implements Cloneable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+    public List<Integer> getCategoryIds() {
+        return categoryIds;
+    }
+
+    public void setCategoryIds(List<Integer> categoryIds) {
+        this.categoryIds = categoryIds;
     }
 
     public boolean isAvailabily() {

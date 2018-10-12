@@ -1,6 +1,5 @@
 package com.gurjinder.tandooriBackend.web;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.gurjinder.tandooriBackend.model.FoodCategory;
 import com.gurjinder.tandooriBackend.model.FoodItem;
 import com.gurjinder.tandooriBackend.service.FoodItemService;
