@@ -27,8 +27,8 @@ public class UserService {
     }
 
     public Admin registerAdmin(Admin admin){
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        admin.setPassword(encoder.encode(admin.getPassword()));
+       BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+       admin.setPassword(encoder.encode(admin.getPassword()));
         return userDao.insertAdmin(admin);
 
     }

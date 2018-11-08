@@ -2,7 +2,9 @@ package com.gurjinder.tandooriBackend.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 @JsonInclude(JsonInclude.Include.NON_DEFAULT)
 public abstract class User {
@@ -15,10 +17,12 @@ public abstract class User {
     @NotNull
     private String phoneNumber;
     @NotNull
+
     private String emailId;
     @NotNull
     private String password;
     private String role;
+
     private boolean active;
 
     public int getId() {

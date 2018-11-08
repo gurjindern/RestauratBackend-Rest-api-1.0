@@ -4,6 +4,7 @@ import com.gurjinder.tandooriBackend.DAOs.UserDao;
 import com.gurjinder.tandooriBackend.model.Address;
 import com.gurjinder.tandooriBackend.model.Admin;
 import com.gurjinder.tandooriBackend.model.Customer;
+import com.gurjinder.tandooriBackend.myConfigurations.MyUserDetail;
 import com.gurjinder.tandooriBackend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.trace.http.HttpTrace;
@@ -11,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 
 @RestController
@@ -21,7 +24,8 @@ public class UserController {
     @Autowired
     private UserDao ser;
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE,path="registerCustomer")
-    public ResponseEntity<Response> registerCustomer(@RequestBody Customer customer){
+    public ResponseEntity<Response> registerCustomer(
+            @RequestBody Customer customer){
 
         return new ResponseEntity<>(new Response(){
             private String status="user created";
@@ -68,8 +72,12 @@ public class UserController {
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE,path="demo")
-public ResponseEntity<?> demo(){
-        return new ResponseEntity<>(ser.findUser("gurjindern74@gmail.in"),HttpStatus.OK);
+    public ResponseEntity<?> demo(){
+
+        System.err.println("i am here");
+        return new ResponseEntity<>(ser.findUser("wolverine"),HttpStatus.OK);
+     //  return new ResponseEntity<>(new MyUserDetail(ser).loadUserByUsername("wolverine"),HttpStatus.OK);
+       // return new ResponseEntity<>(new MyUserDetail().loadUserByUsername(""),HttpStatus.OK);
     }
 
 

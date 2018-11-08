@@ -4,12 +4,15 @@ import com.gurjinder.tandooriBackend.model.FoodCategory;
 import com.gurjinder.tandooriBackend.model.FoodItem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.stereotype.Repository;
 
 //import java.sql.ResultSet;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -81,6 +84,72 @@ FoodItemAndCategoryDao {
                 new BeanPropertyRowMapper<FoodCategory>(FoodCategory.class));
     }
 
+
+
+    // admin specific
+    public FoodCategory addFoodCategory(FoodCategory  category){
+        int maxCategoryId;
+        try{
+            maxCategoryId=jdbcTemplate.queryForObject("select max(id) from categories",Integer.class);
+
+        }
+        catch (EmptyResultDataAccessException e){
+            maxCategoryId=0;
+
+        }
+        catch(NullPointerException e){
+            maxCategoryId=0;
+        }
+        category.setId(maxCategoryId+1);
+        String insertStatement="insert into categories(id,name,description) values(?,?,?)";
+
+        jdbcTemplate.update(insertStatement,new Object[]{category.getId(),category.getName(),category.getDescription()});
+
+        return category;
+
+    }
+
+    public FoodItem addFoodItem(FoodItem foodItem){
+
+        int maxItemId;
+        try{
+            maxItemId=jdbcTemplate.queryForObject("select max(id) from food_items",Integer.class);
+
+        }
+        catch (EmptyResultDataAccessException e){
+            maxItemId=0;
+
+        }
+        catch(NullPointerException e){
+            maxItemId=0;
+        }
+        foodItem.setId(maxItemId+1);
+        String insertStatement="insert into food_Items(id,name,price,description) values(?,?,?,?)";
+        jdbcTemplate.update(insertStatement,new Object[]{foodItem.getId(),foodItem.getName(),
+                foodItem.getPrice(),foodItem.getDescription()});
+        insertStatement="insert into item_categories(food_item_id,category_id) values(?,?)";
+        jdbcTemplate.batchUpdate(insertStatement, new BatchPreparedStatementSetter() {
+            @Override
+            public void setValues(PreparedStatement ps, int i) throws SQLException {
+                ps.setInt(1,foodItem.getId());
+                ps.setInt(2,foodItem.getCategoryIds().get(i));
+            }
+
+            @Override
+            public int getBatchSize() {
+                return foodItem.getCategoryIds().size();
+            }
+        });
+        return foodItem;
+    }
+
+
+
+
+
+
+
+    //test
     public String getbyid(){
         return (String)jdbcTemplate.queryForObject("select name from categories where id=?",new  Object[]{1},String.class);
     }

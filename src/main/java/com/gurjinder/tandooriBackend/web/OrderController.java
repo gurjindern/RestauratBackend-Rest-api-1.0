@@ -2,10 +2,13 @@ package com.gurjinder.tandooriBackend.web;
 
 import com.gurjinder.tandooriBackend.model.Order;
 import com.gurjinder.tandooriBackend.service.OrderService;
+import com.gurjinder.tandooriBackend.service.ResultResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -37,5 +40,12 @@ public class OrderController {
                 return sumittedOrder;
             }
         },HttpStatus.ACCEPTED);
-    };
+    }
+
+    @GetMapping(produces = APPLICATION_JSON_VALUE,path = "{customerId}")
+    public ResponseEntity<ResultResponse<List<Order>>> ordersByCustomer(@PathVariable int customerId){
+
+        return new ResponseEntity<>(service.getOrdersbyCustomer(customerId),HttpStatus.OK);
+    }
+    
 }

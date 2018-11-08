@@ -8,6 +8,7 @@ import com.gurjinder.tandooriBackend.model.Customer;
 
 import com.gurjinder.tandooriBackend.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -19,9 +20,11 @@ public class UserDao {
     private JdbcTemplate template;
     private Object myLock;
     private Object myLock1;
+
     public UserDao() {
-        myLock=new Object();
-        myLock1=new Object();;
+        myLock = new Object();
+        myLock1 = new Object();
+        ;
 
     }
 
@@ -34,12 +37,12 @@ public class UserDao {
                 existingEmail = (String) template.queryForObject("select email_id from customers where email_id like ?",
                         new Object[]{customer.getEmailId()},
                         String.class);
-            } catch (Exception e) {
+            } catch (EmptyResultDataAccessException e) {
             }
             if (existingEmail == null) {
                 template.update(insertCustomer, new Object[]{customer.getFirstName(),
                         customer.getLastName(), customer.getPhoneNumber(),
-                        customer.getEmailId(), customer.getPassword()});
+                        customer.getEmailId().toUpperCase(), customer.getPassword()});
                 customer = template.queryForObject("select *  from customers where id=(select max(id) from customers)",
                         new BeanPropertyRowMapper<Customer>(Customer.class));
 
@@ -56,29 +59,37 @@ public class UserDao {
                 "values(address_seq.nextVal,?,?,?,?,?,?,?)";
 
         template.update(insertAddress, new Object[]{address.getBuildingNumber(),
-                address.getStreetName(),address.getApt(), address.getPostalCode(), address.getCity(),
+                address.getStreetName(), address.getApt(), address.getPostalCode(), address.getCity(),
                 address.getProvince(), customerId});
 
     }
 
-    public Admin insertAdmin(Admin admin){
+    public Admin insertAdmin(Admin admin) {
 
-        String insertAdmin = "insert into admins(id,admin_Username,First_name,Last_name,Phone_number,Password) " +
+        String insertAdmin = "insert into admins(id,Email_id,First_name,Last_name,Phone_number,Password) " +
                 "values(?,?,?,?,?,?)";
         synchronized (myLock1) {
             String existingUsername = null;
             try {
-                existingUsername = (String) template.queryForObject("select admin_Username from admins where admin_Username like ?",
-                        new Object[]{admin.getAdminUsername()},
+                existingUsername = (String) template.queryForObject("select email_id from admins where Email_id like ?",
+                        new Object[]{admin.getEmailId()},
                         String.class);
-            } catch (Exception e) {
+            } catch (EmptyResultDataAccessException e) {
             }
             if (existingUsername == null) {
 
-                int lastAdminId=(int)template.queryForObject("select max(id) from admins",Integer.class);
-                admin.setId(lastAdminId+1);
+                int lastAdminId;
+                try {
+                    lastAdminId = (int) template.queryForObject("select max(id) from admins", Integer.class);
+                } catch (EmptyResultDataAccessException e) {
+                    lastAdminId = 0;
+                } catch (NullPointerException e) {
+                    lastAdminId = 0;
+                }
+                admin.setId(lastAdminId + 1);
+
                 template.update(insertAdmin, new Object[]{admin.getId(),
-                        admin.getAdminUsername(),admin.getFirstName(),
+                        admin.getEmailId().toUpperCase(), admin.getFirstName(),
                         admin.getLastName(), admin.getPhoneNumber(),
                         admin.getPassword()});
 
@@ -89,29 +100,36 @@ public class UserDao {
 
             }
         }
+        admin.setPassword(null);
         return admin;
 
     }
+
     //for customers email id is username
-    public User  findUser(String userName){
-        String searchInAdmin="select * from admins where admin_Username like ?";
-        String searchInCustomers="select * from customers where email_id like ?";
-        Admin admin=null;
-        Customer customer=null;
-        try{
-            admin=(Admin)template.queryForObject(searchInAdmin,new Object[]{userName}, new BeanPropertyRowMapper<Admin>(Admin.class));
-            customer=(Customer) template.queryForObject(searchInCustomers,new Object[]{userName}, new BeanPropertyRowMapper<>(Customer.class));
+    public User findUser(String email_id) {
+        String searchInAdmin = "select * from admins where email_id  like ?";
+        String searchInCustomers = "select * from customers where email_id like ?";
+        Admin admin = null;
+        Customer customer = null;
+        try {
+            admin = (Admin) template.queryForObject(searchInAdmin, new Object[]{email_id}, new BeanPropertyRowMapper<Admin>(Admin.class));
 
-        }catch(Exception e){
+
+        } catch (EmptyResultDataAccessException e) {
 
         }
-        if(admin!=null){
-            admin.setRole("ADMIN");
-            return admin;}
-        else if(customer!=null) {
-           return customer;
+        try {
+            customer = (Customer) template.queryForObject(searchInCustomers, new Object[]{email_id}, new BeanPropertyRowMapper<>(Customer.class));
+        } catch (EmptyResultDataAccessException e) {
+
         }
-        else
+        if (admin != null) {
+            admin.setRole("ROLE_ADMIN");
+            return admin;
+        } else if (customer != null) {
+            customer.setRole("ROLE_CUSTOMER");
+            return customer;
+        } else
             return null;
 
     }

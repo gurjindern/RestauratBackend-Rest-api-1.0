@@ -3,13 +3,12 @@ package com.gurjinder.tandooriBackend.web;
 import com.gurjinder.tandooriBackend.model.FoodCategory;
 import com.gurjinder.tandooriBackend.model.FoodItem;
 import com.gurjinder.tandooriBackend.service.FoodItemService;
+import com.gurjinder.tandooriBackend.service.ResultResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -24,47 +23,36 @@ public class FoodItemController {
 
 
     @GetMapping
-    public ResponseEntity<Response> getFoodItems(){
+    public ResponseEntity<ResultResponse<List<FoodItem>>> getFoodItems(){
 
         HttpHeaders headers=new HttpHeaders();
         headers.setContentType(APPLICATION_JSON);
-        return new ResponseEntity<>(new Response(){
-
-            private String status="Success :)";
-            private List<FoodItem> foodItems=service.getFoodItems();
-
-            public String getStatus() {
-                return status;
-            }
-
-            public List<FoodItem> getFoodItems() {
-                return foodItems;
-            }
-        },headers,HttpStatus.OK);
+        return new ResponseEntity<>(service.getFoodItems(),headers,HttpStatus.OK);
     }
 
 
 
     @GetMapping("categories")
-    public ResponseEntity<Response> getcategories(){
+    public ResponseEntity<ResultResponse<List<FoodCategory>>> getcategories(){
 
         HttpHeaders headers=new HttpHeaders();
         headers.setContentType(APPLICATION_JSON);
-        return new ResponseEntity<>(new Response(){
-            private String status="Success :)";
-            private List<FoodCategory> foodCategories=service.getFoodCategories();
+        return new ResponseEntity<>(service.getFoodCategories()
+                ,headers,HttpStatus.OK);
+    }
 
 
-            public List<FoodCategory> getFoodCategories() {
-                return foodCategories;
-            }
+    // admin specific
+    @PostMapping(consumes = APPLICATION_JSON_VALUE,path="admin/category")
+    public ResponseEntity<ResultResponse<FoodCategory>> addNewCategory(@RequestBody FoodCategory category ){
 
-            public String getStatus() {
-                return status;
-            }
-        }
+        return new ResponseEntity<>(service.addFoodCatgory(category),HttpStatus.CREATED);
+    }
 
-
-        ,headers,HttpStatus.OK);
+    @PostMapping(consumes = APPLICATION_JSON_VALUE,path="admin/fooditem")
+    public ResponseEntity<ResultResponse<FoodItem>> addNewFoodItem(@RequestBody FoodItem foodItem ){
+        List<Integer> i=foodItem.getCategoryIds();
+        System.err.println(i);
+        return new ResponseEntity<>(service.addFoodItem(foodItem),HttpStatus.CREATED);
     }
 }
