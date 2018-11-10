@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.StringTokenizer;
 
 @Repository
 public class FoodCategoryDao {
@@ -23,7 +24,7 @@ public class FoodCategoryDao {
     }
 
     public List<FoodItem> getItemsInCategory(int categoryId) {
-        String query = "select * from food_items ,item_categories where  category_id=? ";
+        String query = "select * from food_items ,item_categories where  ITEM_CATEGORIES.food_item_id = FOOD_ITEMS.id and ITEM_CATEGORIES.category_id=? ";
         return jdbcTemplate.query(query, new Object[]{categoryId}, new BeanPropertyRowMapper<>(FoodItem.class));
 
     }
@@ -51,6 +52,10 @@ public class FoodCategoryDao {
         return category;
 
     }
+    public void changeCategoryName(int id,String name){
+        String stmt = "update categories set name=? where id=?";
+        jdbcTemplate.update(stmt, name, id);
+    }
 
 
     @Transactional
@@ -66,7 +71,14 @@ public class FoodCategoryDao {
         try {
             jdbcTemplate.update(stmt, categoryId, foodItemId);
         } catch (DataIntegrityViolationException e) {
+            StringTokenizer tokenizer=new StringTokenizer(e.getCause().toString(),":");
+            while(tokenizer.hasMoreTokens()){
+                String token=tokenizer.nextToken().trim();
+                if(token.equalsIgnoreCase("ORA-02291"))
+                    System.err.println("cause of failure ::::"+ token
 
+                    );
+            }
         }
     }
 

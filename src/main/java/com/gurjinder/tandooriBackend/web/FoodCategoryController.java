@@ -31,12 +31,12 @@ public class FoodCategoryController {
                 , headers, HttpStatus.OK);
     }
 
-    @GetMapping(path="{id}")
-    public ResponseEntity<ResultResponse<List<FoodItem>>> getFoodItemsInCategory(@PathVariable int categoryId) {
+    @GetMapping(path="{id}/fooditems")
+    public ResponseEntity<ResultResponse<List<FoodItem>>> getFoodItemsInCategory(@PathVariable int id) {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(APPLICATION_JSON);
-        return new ResponseEntity<>(service.getItemsInCategory(categoryId), headers, HttpStatus.OK);
+        return new ResponseEntity<>(service.getItemsInCategory(id), headers, HttpStatus.OK);
     }
 
 }

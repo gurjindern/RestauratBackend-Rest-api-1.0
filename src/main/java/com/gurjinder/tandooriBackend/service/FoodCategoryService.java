@@ -5,9 +5,9 @@ import com.gurjinder.tandooriBackend.model.FoodCategory;
 import com.gurjinder.tandooriBackend.model.FoodItem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.Date;
 import java.util.List;
+
 @Service
 public class FoodCategoryService {
 
@@ -34,12 +34,18 @@ public class FoodCategoryService {
     }
 
     public ResultResponse deleteFoodCategory(int categoryId) {
+
         dao.deleteFoodCategory(categoryId);
         return new ResultResponse("deleted", new Date());
     }
 
-    public ResultResponse addItemInCategory(int categoryId, int itemId) {
+    public ResultResponse changeItemName(int id,String name) {
 
+        dao.changeCategoryName(id,name);
+        return new ResultResponse("success", new Date());
+    }
+
+    public ResultResponse addItemInCategory(int categoryId, int itemId) {
 
         dao.addItemInCategoy(categoryId, itemId);
         return new ResultResponse("success", new Date());
@@ -47,8 +53,6 @@ public class FoodCategoryService {
 
 
     public ResultResponse removeItemFromCategory(int categoryId,int itemId) {
-
-
         dao.removeItemFromCategoy(categoryId, itemId);
         return new ResultResponse("success", new Date());
     }

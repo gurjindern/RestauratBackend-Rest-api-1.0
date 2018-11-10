@@ -18,7 +18,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE, path = "users")
-public class UserController {
+public class CustomerController {
     @Autowired
     private UserService service;
     @Autowired

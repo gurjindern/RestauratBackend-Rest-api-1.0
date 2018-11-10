@@ -164,21 +164,4 @@ FoodItemDao {
         jdbcTemplate.update(stmt, description, itemId);
 
     }
-
-
-
-
-
-
-    //test
-    public String getbyid() {
-        return (String) jdbcTemplate.queryForObject("select name from categories where id=?", new Object[]{1}, String.class);
-    }
-
-
-    public void test() {
-        // jdbcTemplate.execute("drop table categories");
-    }
-
-
 }

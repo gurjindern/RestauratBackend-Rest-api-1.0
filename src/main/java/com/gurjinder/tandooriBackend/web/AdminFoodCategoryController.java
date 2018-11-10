@@ -28,6 +28,10 @@ public class AdminFoodCategoryController {
     public ResponseEntity<ResultResponse> deleteFoodCategory(@PathVariable int id){
         return new ResponseEntity<>(service.deleteFoodCategory(id), HttpStatus.OK);
     }
+    @PutMapping(path="{id}", params={"name"})
+    public  ResponseEntity<ResultResponse> changeName(@PathVariable  int id,String name){
+        return  new ResponseEntity<>(service.changeItemName(id,name), HttpStatus.OK);
+    }
 
     @PutMapping(path="{id}/fooditems/{itemId}")
     public ResponseEntity<ResultResponse>  addItemInCategory (@PathVariable int id,@PathVariable int itemId) {
