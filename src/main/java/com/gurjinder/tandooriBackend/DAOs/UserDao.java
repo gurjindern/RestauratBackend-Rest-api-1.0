@@ -105,7 +105,7 @@ public class UserDao {
 
     }
 
-    //for customers email id is username
+    // for login purpose
     public User findUser(String email_id) {
         String searchInAdmin = "select * from admins where email_id  like ?";
         String searchInCustomers = "select * from customers where email_id like ?";

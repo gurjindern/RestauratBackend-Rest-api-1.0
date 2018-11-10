@@ -3,6 +3,7 @@ package com.gurjinder.tandooriBackend.service;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.util.Date;
+
 @JsonInclude(JsonInclude.Include.NON_DEFAULT)
 public class ResultResponse<T> {
 
@@ -11,6 +12,11 @@ public class ResultResponse<T> {
     private T result;
 
     public ResultResponse() {
+    }
+
+    public ResultResponse(String status, Date date) {
+        this.status = status;
+        this.date = date;
     }
 
     public ResultResponse(String status, Date date, T result) {

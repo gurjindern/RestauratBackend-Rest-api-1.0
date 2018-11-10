@@ -14,26 +14,24 @@ public class UserService {
     @Autowired
     private UserDao userDao;
 
-    public Customer registerCustomer(Customer customer){
+    public Customer registerCustomer(Customer customer) {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         customer.setPassword(encoder.encode(customer.getPassword()));
         return userDao.insertCustomer(customer);
 
     }
 
-    public void addAddress(int customerId, Address address){
+    public void addAddress(int customerId, Address address) {
 
-        userDao.insertAddress(customerId,address);
+        userDao.insertAddress(customerId, address);
     }
 
-    public Admin registerAdmin(Admin admin){
-       BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-       admin.setPassword(encoder.encode(admin.getPassword()));
+    public Admin registerAdmin(Admin admin) {
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        admin.setPassword(encoder.encode(admin.getPassword()));
         return userDao.insertAdmin(admin);
 
     }
-
-
 
 
 }

@@ -13,24 +13,24 @@ import java.util.List;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
-@RequestMapping(produces = APPLICATION_JSON_VALUE,path = "orders")
+@RequestMapping(produces = APPLICATION_JSON_VALUE, path = "orders")
 public class OrderController {
     @Autowired
     OrderService service;
 
     @GetMapping
-    public String getAllOrders(){
+    public String getAllOrders() {
         return "{all orders will come from here}";
     }
 
 
-    @PostMapping(consumes=APPLICATION_JSON_VALUE,path="{customerId}/submit")
-    public ResponseEntity<Response>  submitOrder(@PathVariable int customerId,@RequestBody Order order){
+    @PostMapping(consumes = APPLICATION_JSON_VALUE, path = "{customerId}/submit")
+    public ResponseEntity<Response> submitOrder(@PathVariable int customerId, @RequestBody Order order) {
 
-        return  new ResponseEntity<>(new Response() {
-            private String status="order accepted";
+        return new ResponseEntity<>(new Response() {
+            private String status = "order accepted";
 
-            private Order sumittedOrder=service.submitOrder(customerId, order);
+            private Order sumittedOrder = service.submitOrder(customerId, order);
 
             public String getStatus() {
                 return status;
@@ -39,13 +39,13 @@ public class OrderController {
             public Order getSumittedOrder() {
                 return sumittedOrder;
             }
-        },HttpStatus.ACCEPTED);
+        }, HttpStatus.ACCEPTED);
     }
 
-    @GetMapping(produces = APPLICATION_JSON_VALUE,path = "{customerId}")
-    public ResponseEntity<ResultResponse<List<Order>>> ordersByCustomer(@PathVariable int customerId){
+    @GetMapping(produces = APPLICATION_JSON_VALUE, path = "{customerId}")
+    public ResponseEntity<ResultResponse<List<Order>>> ordersByCustomer(@PathVariable int customerId) {
 
-        return new ResponseEntity<>(service.getOrdersbyCustomer(customerId),HttpStatus.OK);
+        return new ResponseEntity<>(service.getOrdersbyCustomer(customerId), HttpStatus.OK);
     }
-    
+
 }

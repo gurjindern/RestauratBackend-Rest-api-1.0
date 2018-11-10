@@ -12,6 +12,7 @@ public class FoodItem implements Cloneable {
     private double price;
     private String description;
     private List<Integer> categoryIds;
+    @JsonInclude(JsonInclude.Include.ALWAYS)
     private boolean availabily;
 
 

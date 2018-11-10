@@ -1,49 +1,79 @@
 package com.gurjinder.tandooriBackend.service;
 
-import com.gurjinder.tandooriBackend.DAOs.FoodItemAndCategoryDao;
-import com.gurjinder.tandooriBackend.model.FoodCategory;
+import com.gurjinder.tandooriBackend.DAOs.FoodItemDao;
 import com.gurjinder.tandooriBackend.model.FoodItem;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.util.ArrayList;
+
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class FoodItemService {
 
 
-
     @Autowired
-    private FoodItemAndCategoryDao itemAndCategoryDao;
-
-
+    private FoodItemDao dao;
 
 
     public ResultResponse<List<FoodItem>> getFoodItems() {
 
-        return new ResultResponse<>("sucess",new Date(),itemAndCategoryDao.getAllFoodIItems());
+        return new ResultResponse<>("sucess", new Date(), dao.getAllFoodIItems());
     }
 
 
-    public ResultResponse<List<FoodCategory> > getFoodCategories(){
 
-        return  new ResultResponse<>("success",new Date(),itemAndCategoryDao.getAllCategories());
-    }
+
+
+
 
 
 
     // admin specific
 
-    public ResultResponse<FoodCategory> addFoodCatgory(FoodCategory category){
-        return new ResultResponse<>("created", new Date(),itemAndCategoryDao.addFoodCategory(category));
+
+    public ResultResponse<FoodItem> addFoodItem(FoodItem foodItem) {
+        return new ResultResponse<>("created", new Date(), dao.addFoodItem(foodItem));
     }
 
-    public ResultResponse<FoodItem> addFoodItem(FoodItem foodItem){
-        return new ResultResponse<>("created", new Date(),itemAndCategoryDao.addFoodItem(foodItem));
+    public ResultResponse deleteFoodItem(int itemId) {
+        dao.deleteFoddItem(itemId);
+        return new ResultResponse("deleted", new Date());
     }
+
+    public ResultResponse toggleItemAvailability(int itemId,boolean availability) {
+        int availabilityAsInt;
+       if(availability)
+           availabilityAsInt=1;
+       else
+           availabilityAsInt=0;
+
+         dao.toggleAvailabilty(itemId,availabilityAsInt);
+        return new ResultResponse("success", new Date());
+    }
+
+    public ResultResponse changePrice(int itemId,double price) {
+
+
+        dao.changePrice(itemId,price);
+        return new ResultResponse("success", new Date());
+    }
+    public ResultResponse changeItemName(int itemId,String name) {
+
+
+        dao.changeName(itemId,name);
+        return new ResultResponse("success", new Date());
+    }
+    public ResultResponse changeItemDescription(int itemId,String description) {
+
+
+        dao.changeDescription(itemId,description);
+        return new ResultResponse("success", new Date());
+    }
+
+
+
 }
 
 

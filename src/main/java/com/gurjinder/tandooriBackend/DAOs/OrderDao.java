@@ -56,10 +56,11 @@ public class OrderDao {
         return order;
 
     }
-    public List<Order> fetchOrderByCustomer(int customerId){
+
+    public List<Order> fetchOrderByCustomer(int customerId) {
         List<Order> orders;
-        String query="Select  * from orders where customer_id=?";
-        orders=template.query(query,new Object[]{customerId},new BeanPropertyRowMapper<>(Order.class));
+        String query = "Select  * from orders where customer_id=?";
+        orders = template.query(query, new Object[]{customerId}, new BeanPropertyRowMapper<>(Order.class));
         return orders;
     }
 

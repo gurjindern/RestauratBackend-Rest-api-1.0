@@ -16,43 +16,26 @@ import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
-@RequestMapping(produces = APPLICATION_JSON_VALUE,path = "fooditems")
+@RequestMapping(produces = APPLICATION_JSON_VALUE, path = "fooditems")
 public class FoodItemController {
     @Autowired
     private FoodItemService service;
 
 
     @GetMapping
-    public ResponseEntity<ResultResponse<List<FoodItem>>> getFoodItems(){
+    public ResponseEntity<ResultResponse<List<FoodItem>>> getFoodItems() {
 
-        HttpHeaders headers=new HttpHeaders();
+        HttpHeaders headers = new HttpHeaders();
         headers.setContentType(APPLICATION_JSON);
-        return new ResponseEntity<>(service.getFoodItems(),headers,HttpStatus.OK);
+        return new ResponseEntity<>(service.getFoodItems(), headers, HttpStatus.OK);
     }
 
 
 
-    @GetMapping("categories")
-    public ResponseEntity<ResultResponse<List<FoodCategory>>> getcategories(){
-
-        HttpHeaders headers=new HttpHeaders();
-        headers.setContentType(APPLICATION_JSON);
-        return new ResponseEntity<>(service.getFoodCategories()
-                ,headers,HttpStatus.OK);
-    }
 
 
-    // admin specific
-    @PostMapping(consumes = APPLICATION_JSON_VALUE,path="admin/category")
-    public ResponseEntity<ResultResponse<FoodCategory>> addNewCategory(@RequestBody FoodCategory category ){
 
-        return new ResponseEntity<>(service.addFoodCatgory(category),HttpStatus.CREATED);
-    }
 
-    @PostMapping(consumes = APPLICATION_JSON_VALUE,path="admin/fooditem")
-    public ResponseEntity<ResultResponse<FoodItem>> addNewFoodItem(@RequestBody FoodItem foodItem ){
-        List<Integer> i=foodItem.getCategoryIds();
-        System.err.println(i);
-        return new ResponseEntity<>(service.addFoodItem(foodItem),HttpStatus.CREATED);
-    }
+
+
 }
