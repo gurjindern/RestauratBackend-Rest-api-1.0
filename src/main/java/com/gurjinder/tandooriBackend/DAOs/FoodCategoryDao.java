@@ -82,11 +82,13 @@ public class FoodCategoryDao {
         }
     }
 
-
+    @Transactional
     public void removeItemFromCategoy(int categoryId, int foodItemId) {
         String stmt = "delete from item_categories where category_id=? and food_item_Id=?";
 
         jdbcTemplate.update(stmt, categoryId, foodItemId);
+        throw new RuntimeException();
+
 
 
     }

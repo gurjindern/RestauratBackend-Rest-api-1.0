@@ -18,13 +18,13 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE, path = "users")
-public class CustomerController {
+public class UserController {
     @Autowired
     private UserService service;
     @Autowired
     private UserDao ser;
 
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "registerCustomer")
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "customers")
     public ResponseEntity<Response> registerCustomer(
             @RequestBody Customer customer) {
 
@@ -42,7 +42,7 @@ public class CustomerController {
         }, HttpStatus.CREATED);
     }
 
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "{customerId}/addAddress")
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "customers/{customerId}/address")
     public ResponseEntity<Response> addAddress(@PathVariable int customerId, @RequestBody Address address) {
 
         service.addAddress(customerId, address);
@@ -56,7 +56,7 @@ public class CustomerController {
         }, HttpStatus.CREATED);
     }
 
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "admin/register")
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "admin")
     public ResponseEntity<Response> resgisterAdmin(@RequestBody Admin admin) {
 
         return new ResponseEntity<>(new Response() {

@@ -24,7 +24,7 @@ public class OrderController {
     }
 
 
-    @PostMapping(consumes = APPLICATION_JSON_VALUE, path = "{customerId}/submit")
+    @PostMapping(consumes = APPLICATION_JSON_VALUE, path = "{customerId}/")
     public ResponseEntity<Response> submitOrder(@PathVariable int customerId, @RequestBody Order order) {
 
         return new ResponseEntity<>(new Response() {

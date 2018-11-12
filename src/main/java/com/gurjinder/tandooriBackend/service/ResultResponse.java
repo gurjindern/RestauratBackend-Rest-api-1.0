@@ -8,20 +8,22 @@ import java.util.Date;
 public class ResultResponse<T> {
 
     private String status;
-    private Date date;
+    private Date timeStamp;
+
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private T result;
 
     public ResultResponse() {
     }
 
-    public ResultResponse(String status, Date date) {
+    public ResultResponse(String status, Date timeStamp) {
         this.status = status;
-        this.date = date;
+        this.timeStamp = timeStamp;
     }
 
-    public ResultResponse(String status, Date date, T result) {
+    public ResultResponse(String status, Date timeStamp, T result) {
         this.status = status;
-        this.date = date;
+        this.timeStamp = timeStamp;
         this.result = result;
     }
 
@@ -33,12 +35,12 @@ public class ResultResponse<T> {
         this.status = status;
     }
 
-    public Date getDate() {
-        return date;
+    public Date getTimeStamp() {
+        return timeStamp;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setTimeStamp(Date timeStamp) {
+        this.timeStamp = timeStamp;
     }
 
     public T getResult() {

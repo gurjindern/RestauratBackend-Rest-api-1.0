@@ -19,10 +19,6 @@ public class AdminFoodItemController {
     @Autowired
     private FoodItemService service;
 
-
-
-
-
     @PostMapping(consumes = APPLICATION_JSON_VALUE)
     public ResponseEntity<ResultResponse<FoodItem>> addNewFoodItem(@RequestBody FoodItem foodItem) {
 
@@ -43,7 +39,8 @@ public class AdminFoodItemController {
     }
 
     @PutMapping(path="{id}" ,params={"price"})
-    public ResponseEntity<ResultResponse>  changePrice(@PathVariable int id,double price) {
+
+    public ResponseEntity<ResultResponse>  changePrice(@PathVariable int id,Double price) {
         System.err.println(price);
         return new ResponseEntity<>(service.changePrice(id, price), HttpStatus.OK);
 

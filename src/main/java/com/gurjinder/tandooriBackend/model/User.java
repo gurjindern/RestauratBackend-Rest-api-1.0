@@ -17,7 +17,7 @@ public abstract class User {
     @NotNull
     private String phoneNumber;
     @NotNull
-
+    @Email
     private String emailId;
     @NotNull
     private String password;

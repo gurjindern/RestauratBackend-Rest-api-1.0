@@ -22,6 +22,11 @@ public class FoodItemService {
         return new ResultResponse<>("sucess", new Date(), dao.getAllFoodIItems());
     }
 
+    public ResultResponse<FoodItem> getFoodItemsById(int id) {
+
+        return new ResultResponse<>("sucess", new Date(), dao.getFoodItemById(id));
+    }
+
 
 
 

@@ -3,20 +3,19 @@ package com.gurjinder.tandooriBackend.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import javax.validation.constraints.NotEmpty;
 import java.util.List;
+
 @JsonInclude(JsonInclude.Include.NON_DEFAULT)
 public class FoodItem implements Cloneable {
 
     private int id;
     private String name;
-    private double price;
+    private Double price;
     private String description;
     private List<Integer> categoryIds;
     @JsonInclude(JsonInclude.Include.ALWAYS)
     private boolean availabily;
-
-
-
 
 
     public FoodItem() {
@@ -46,13 +45,14 @@ public class FoodItem implements Cloneable {
         this.name = name;
     }
 
-    public double getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
+
 
     public String getDescription() {
         return description;
@@ -61,6 +61,7 @@ public class FoodItem implements Cloneable {
     public void setDescription(String description) {
         this.description = description;
     }
+
     public List<Integer> getCategoryIds() {
         return categoryIds;
     }

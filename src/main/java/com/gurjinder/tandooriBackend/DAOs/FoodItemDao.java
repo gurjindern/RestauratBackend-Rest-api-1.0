@@ -2,6 +2,7 @@ package com.gurjinder.tandooriBackend.DAOs;
 
 import com.gurjinder.tandooriBackend.model.FoodCategory;
 import com.gurjinder.tandooriBackend.model.FoodItem;
+import com.gurjinder.tandooriBackend.model.FoodItemRowMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -29,7 +30,7 @@ FoodItemDao {
 
     public List<FoodItem> getAllFoodIItems() {
 
-        return jdbcTemplate.query("select * from FOOD_ITEMS ft,ITEM_CATEGORIES  ic where ft.ID=ic.FOOD_ITEM_ID",
+        return jdbcTemplate.query("select * from FOOD_ITEMS ft left join ITEM_CATEGORIES  ic on  ft.ID=ic.FOOD_ITEM_ID order by ft.id asc",
                 new ResultSetExtractor<List<FoodItem>>() {
                     @Override
                     public List<FoodItem> extractData(ResultSet rs) throws SQLException, DataAccessException {
@@ -54,8 +55,10 @@ FoodItemDao {
                                 foodItem.setName(itemName);
                                 foodItem.setPrice(price);
                                 foodItem.setDescription(description);
-                                foodItem.setCategoryIds(new ArrayList<>());
-                                foodItem.getCategoryIds().add(categoryId);
+
+                                if(categoryId!=0){
+                                    foodItem.setCategoryIds(new ArrayList<>());
+                                    foodItem.getCategoryIds().add(categoryId);}
                                 if (availability == 0) {
                                     foodItem.setAvailabily(false);
                                 } else {
@@ -77,6 +80,15 @@ FoodItemDao {
                 });
 
     }
+
+    public FoodItem getFoodItemById(int id){
+        String query="select * from FOOD_ITEMS where id=?";
+        return (FoodItem) jdbcTemplate.queryForObject(query,new Object[]{id},
+               new FoodItemRowMapper());
+       // return (FoodItem) jdbcTemplate.queryForObject(query,new Object[]{id},
+         //       new BeanPropertyRowMapper<>(FoodItem.class));
+    }
+
 
 
 
@@ -104,6 +116,7 @@ FoodItemDao {
         jdbcTemplate.update(insertStatement, new Object[]{foodItem.getId(), foodItem.getName(),
                 foodItem.getPrice(), foodItem.getDescription()});
         insertStatement = "insert into item_categories(food_item_id,category_id) values(?,?)";
+       try{
         jdbcTemplate.batchUpdate(insertStatement, new BatchPreparedStatementSetter() {
             @Override
             public void setValues(PreparedStatement ps, int i) throws SQLException {
@@ -115,7 +128,11 @@ FoodItemDao {
             public int getBatchSize() {
                 return foodItem.getCategoryIds().size();
             }
-        });
+        });}
+        catch(NullPointerException e){
+
+        }
+        foodItem.setAvailabily(true);
         return foodItem;
     }
 
