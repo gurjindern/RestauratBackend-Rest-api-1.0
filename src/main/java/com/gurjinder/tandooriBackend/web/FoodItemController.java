@@ -31,17 +31,12 @@ public class FoodItemController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<ResultResponse<FoodItem>> getFoodItem(@PathVariable  int id) {
+    public ResponseEntity<ResultResponse<FoodItem>> getFoodItem(@PathVariable int id) {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(APPLICATION_JSON);
         return new ResponseEntity<>(service.getFoodItemsById(id), headers, HttpStatus.OK);
     }
-
-
-
-
-
 
 
 }

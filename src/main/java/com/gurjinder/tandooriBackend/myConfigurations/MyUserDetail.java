@@ -1,6 +1,7 @@
 package com.gurjinder.tandooriBackend.myConfigurations;
 
 import com.gurjinder.tandooriBackend.DAOs.UserDao;
+import com.gurjinder.tandooriBackend.model.RegisteredUser;
 import com.gurjinder.tandooriBackend.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -24,7 +25,7 @@ public class MyUserDetail implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String emailId) throws UsernameNotFoundException {
 
-        User user = userDao.findUser(emailId.toUpperCase());
+        RegisteredUser user = userDao.findUser(emailId.toUpperCase());
         System.err.println("i am running");
         if (user != null) {
             List<GrantedAuthority> authorities = new ArrayList<>();

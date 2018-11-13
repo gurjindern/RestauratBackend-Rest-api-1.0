@@ -28,13 +28,6 @@ public class FoodItemService {
     }
 
 
-
-
-
-
-
-
-
     // admin specific
 
 
@@ -47,36 +40,37 @@ public class FoodItemService {
         return new ResultResponse("deleted", new Date());
     }
 
-    public ResultResponse toggleItemAvailability(int itemId,boolean availability) {
+    public ResultResponse toggleItemAvailability(int itemId, boolean availability) {
         int availabilityAsInt;
-       if(availability)
-           availabilityAsInt=1;
-       else
-           availabilityAsInt=0;
+        if (availability)
+            availabilityAsInt = 1;
+        else
+            availabilityAsInt = 0;
 
-         dao.toggleAvailabilty(itemId,availabilityAsInt);
+        dao.toggleAvailabilty(itemId, availabilityAsInt);
         return new ResultResponse("success", new Date());
     }
 
-    public ResultResponse changePrice(int itemId,double price) {
+    public ResultResponse changePrice(int itemId, double price) {
 
 
-        dao.changePrice(itemId,price);
-        return new ResultResponse("success", new Date());
-    }
-    public ResultResponse changeItemName(int itemId,String name) {
-
-
-        dao.changeName(itemId,name);
-        return new ResultResponse("success", new Date());
-    }
-    public ResultResponse changeItemDescription(int itemId,String description) {
-
-
-        dao.changeDescription(itemId,description);
+        dao.changePrice(itemId, price);
         return new ResultResponse("success", new Date());
     }
 
+    public ResultResponse changeItemName(int itemId, String name) {
+
+
+        dao.changeName(itemId, name);
+        return new ResultResponse("success", new Date());
+    }
+
+    public ResultResponse changeItemDescription(int itemId, String description) {
+
+
+        dao.changeDescription(itemId, description);
+        return new ResultResponse("success", new Date());
+    }
 
 
 }

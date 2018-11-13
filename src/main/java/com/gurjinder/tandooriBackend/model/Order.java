@@ -10,7 +10,6 @@ public class Order {
     private int id;
 
     private long timeSubmitted;
-
     private long timeAccepted;
     private boolean accepted;
     private Customer Customer;

@@ -2,11 +2,8 @@ package com.gurjinder.tandooriBackend.DAOs;
 
 
 import com.gurjinder.tandooriBackend.exceptions.UserExistException;
-import com.gurjinder.tandooriBackend.model.Address;
-import com.gurjinder.tandooriBackend.model.Admin;
-import com.gurjinder.tandooriBackend.model.Customer;
+import com.gurjinder.tandooriBackend.model.*;
 
-import com.gurjinder.tandooriBackend.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -24,7 +21,6 @@ public class UserDao {
     public UserDao() {
         myLock = new Object();
         myLock1 = new Object();
-        ;
 
     }
 
@@ -106,7 +102,7 @@ public class UserDao {
     }
 
     // for login purpose
-    public User findUser(String email_id) {
+    public RegisteredUser findUser(String email_id) {
         String searchInAdmin = "select * from admins where email_id  like ?";
         String searchInCustomers = "select * from customers where email_id like ?";
         Admin admin = null;

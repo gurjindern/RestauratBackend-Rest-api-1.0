@@ -25,23 +25,24 @@ public class AdminFoodCategoryController {
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<ResultResponse> deleteFoodCategory(@PathVariable int id){
+    public ResponseEntity<ResultResponse> deleteFoodCategory(@PathVariable int id) {
         return new ResponseEntity<>(service.deleteFoodCategory(id), HttpStatus.OK);
     }
-    @PutMapping(path="{id}", params={"name"})
-    public  ResponseEntity<ResultResponse> changeName(@PathVariable  int id,String name){
-        return  new ResponseEntity<>(service.changeItemName(id,name), HttpStatus.OK);
+
+    @PutMapping(path = "{id}", params = {"name"})
+    public ResponseEntity<ResultResponse> changeName(@PathVariable int id, String name) {
+        return new ResponseEntity<>(service.changeItemName(id, name), HttpStatus.OK);
     }
 
-    @PutMapping(path="{id}/fooditems/{itemId}")
-    public ResponseEntity<ResultResponse>  addItemInCategory (@PathVariable int id,@PathVariable int itemId) {
+    @PutMapping(path = "{id}/fooditems/{itemId}")
+    public ResponseEntity<ResultResponse> addItemInCategory(@PathVariable int id, @PathVariable int itemId) {
         System.err.println();
         return new ResponseEntity<>(service.addItemInCategory(id, itemId), HttpStatus.OK);
 
     }
 
-    @DeleteMapping (path="{id}/fooditems/{itemId}")
-    public ResponseEntity<ResultResponse>  removeItemFormCategory (@PathVariable int id,@PathVariable int itemId) {
+    @DeleteMapping(path = "{id}/fooditems/{itemId}")
+    public ResponseEntity<ResultResponse> removeItemFormCategory(@PathVariable int id, @PathVariable int itemId) {
         System.err.println();
         return new ResponseEntity<>(service.removeItemFromCategory(id, itemId), HttpStatus.OK);
 

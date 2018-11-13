@@ -2,9 +2,11 @@ package com.gurjinder.tandooriBackend.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-public class Customer extends User {
+import java.util.List;
 
-    private Address address;
+public class Customer extends RegisteredUser {
+
+    private List<Address> address;
     private int numberOfOrders;
 
     public int getNumberOfOrders() {
@@ -15,11 +17,11 @@ public class Customer extends User {
         this.numberOfOrders = numberOfOrders;
     }
 
-    public Address getAddress() {
+    public List<Address> getAddress() {
         return address;
     }
 
-    public void setAddress(Address address) {
+    public void setAddress(List<Address> address) {
         this.address = address;
     }
 }

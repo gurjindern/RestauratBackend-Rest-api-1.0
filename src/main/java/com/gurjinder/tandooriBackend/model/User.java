@@ -15,15 +15,14 @@ public abstract class User {
     @NotNull
     private String lastName;
     @NotNull
+    @Pattern(regexp = "^\\(?([0-9]{3})\\)?[-.\\s]?([0-9]{3})[-.\\s]?([0-9]{4})$")
     private String phoneNumber;
     @NotNull
     @Email
     private String emailId;
-    @NotNull
-    private String password;
-    private String role;
 
-    private boolean active;
+
+
 
     public int getId() {
         return id;
@@ -65,27 +64,7 @@ public abstract class User {
         this.emailId = emailId;
     }
 
-    public String getPassword() {
-        return password;
-    }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
 
-    public String getRole() {
-        return role;
-    }
 
-    public void setRole(String role) {
-        this.role = role;
-    }
-
-    public boolean isActive() {
-        return active;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
-    }
 }

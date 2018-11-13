@@ -12,16 +12,18 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 import java.util.List;
 
 @RestController
-@RequestMapping(produces = APPLICATION_JSON_VALUE,path="foodcategories")
+@RequestMapping(produces = APPLICATION_JSON_VALUE, path = "foodcategories")
 public class FoodCategoryController {
- @Autowired
-    FoodCategoryService  service;
+    @Autowired
+    FoodCategoryService service;
+
     @GetMapping
     public ResponseEntity<ResultResponse<List<FoodCategory>>> getcategories() {
 
@@ -31,7 +33,7 @@ public class FoodCategoryController {
                 , headers, HttpStatus.OK);
     }
 
-    @GetMapping(path="{id}/fooditems")
+    @GetMapping(path = "{id}/fooditems")
     public ResponseEntity<ResultResponse<List<FoodItem>>> getFoodItemsInCategory(@PathVariable int id) {
 
         HttpHeaders headers = new HttpHeaders();
