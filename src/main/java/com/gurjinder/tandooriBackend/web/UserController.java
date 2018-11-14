@@ -73,7 +73,7 @@ public class UserController {
         }, HttpStatus.CREATED);
 
     }
-
+/*
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE, path = "demo")
     public ResponseEntity<?> demo() {
 
@@ -83,5 +83,5 @@ public class UserController {
         // return new ResponseEntity<>(new MyUserDetail().loadUserByUsername(""),HttpStatus.OK);
     }
 
-
+*/
 }
