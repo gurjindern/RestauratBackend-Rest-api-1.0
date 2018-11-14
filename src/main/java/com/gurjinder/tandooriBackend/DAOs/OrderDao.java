@@ -1,6 +1,5 @@
 package com.gurjinder.tandooriBackend.DAOs;
 
-import com.gurjinder.tandooriBackend.model.FoodItem;
 import com.gurjinder.tandooriBackend.model.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -13,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -23,12 +21,12 @@ public class OrderDao {
     @Autowired
     JdbcTemplate template;
 
-    private Object myLock;
+    private Object odereSubmissionLock;
 
 
     public OrderDao() {
 
-        myLock = new Object();
+        odereSubmissionLock = new Object();
     }
 
     public OrderDao(JdbcTemplate template) {
@@ -38,9 +36,9 @@ public class OrderDao {
     public Order submitOrder(int cutomerId, Order order) {
         String insertOrder = "insert into orders(id,time_submitted,customer_id) values(?,?,?)";
         String insertItemsInOrder = "insert into items_in_order(id,order_id,item_id) values (items_in_order_seq.nextVal,?,?)";
-        String getInseredOrder = "select *  from orders where id=(select max(id) from orders";
+        String getInsertedOrder = "select *  from orders where id=(select max(id) from orders";
 
-        synchronized (myLock) {
+        synchronized (odereSubmissionLock) {
             int lastOrderId;
             try {
                 lastOrderId = (int) template.queryForObject("select max(id) from orders", Integer.class);

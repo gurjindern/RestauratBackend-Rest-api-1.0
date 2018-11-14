@@ -1,7 +1,8 @@
 package com.gurjinder.tandooriBackend.DAOs;
 
 
-import com.gurjinder.tandooriBackend.exceptions.UserExistException;
+import com.gurjinder.tandooriBackend.exceptions.NoContentException;
+import com.gurjinder.tandooriBackend.exceptions.UniqueIntegrityViolationException;
 import com.gurjinder.tandooriBackend.model.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,20 @@ public class UserDao {
 
     }
 
+    public Customer getCustomerProfileByEmailId(String email){
+        Customer customer;
+
+        try {
+            customer = (Customer) template.queryForObject("select * from customers where email_id like ?", new Object[]{email.toUpperCase()},
+                    new BeanPropertyRowMapper<>(Customer.class));
+        }
+        catch(EmptyResultDataAccessException e){
+            throw new NoContentException("no user found related to this email id:: "+email);
+        }
+        return  customer;
+
+    }
+
     public Customer insertCustomer(Customer customer) {
         String insertCustomer = "insert into customers(id,First_name,Last_name,Phone_number,Email_id,Password) " +
                 "values(customer_seq.nextVal,?,?,?,?,?)";
@@ -31,7 +46,7 @@ public class UserDao {
             String existingEmail = null;
             try {
                 existingEmail = (String) template.queryForObject("select email_id from customers where email_id like ?",
-                        new Object[]{customer.getEmailId()},
+                        new Object[]{customer.getEmailId().toUpperCase()},
                         String.class);
             } catch (EmptyResultDataAccessException e) {
             }
@@ -43,7 +58,7 @@ public class UserDao {
                         new BeanPropertyRowMapper<Customer>(Customer.class));
 
             } else {
-                throw new UserExistException("email address already exist in records");
+                throw new UniqueIntegrityViolationException("email address already exist in records");
 
             }
         }
@@ -60,6 +75,8 @@ public class UserDao {
 
     }
 
+    /// admin specif
+
     public Admin insertAdmin(Admin admin) {
 
         String insertAdmin = "insert into admins(id,Email_id,First_name,Last_name,Phone_number,Password) " +
@@ -68,7 +85,7 @@ public class UserDao {
             String existingUsername = null;
             try {
                 existingUsername = (String) template.queryForObject("select email_id from admins where Email_id like ?",
-                        new Object[]{admin.getEmailId()},
+                        new Object[]{admin.getEmailId().toUpperCase()},
                         String.class);
             } catch (EmptyResultDataAccessException e) {
             }
@@ -92,7 +109,7 @@ public class UserDao {
 
             } else {
 
-                throw new UserExistException("username already exist in records");
+                throw new UniqueIntegrityViolationException("user with email id  already exists");
 
             }
         }
@@ -100,6 +117,33 @@ public class UserDao {
         return admin;
 
     }
+    public Admin getAdminProfileByEmailId(String email){
+         Admin admin;
+        try {
+            admin = (Admin) template.queryForObject("select * from admin where email_id like ?", new Object[]{email.toUpperCase()},
+                    new BeanPropertyRowMapper<>(Admin.class));
+        }
+        catch(EmptyResultDataAccessException e){
+            throw new NoContentException("no user found related to this email id:: "+email);
+        }
+        return  admin;
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     // for login purpose
     public RegisteredUser findUser(String email_id) {

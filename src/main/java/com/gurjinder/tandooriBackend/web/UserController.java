@@ -4,16 +4,13 @@ import com.gurjinder.tandooriBackend.DAOs.UserDao;
 import com.gurjinder.tandooriBackend.model.Address;
 import com.gurjinder.tandooriBackend.model.Admin;
 import com.gurjinder.tandooriBackend.model.Customer;
-import com.gurjinder.tandooriBackend.myConfigurations.MyUserDetail;
+import com.gurjinder.tandooriBackend.service.ResultResponse;
 import com.gurjinder.tandooriBackend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.actuate.trace.http.HttpTrace;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
 
 
 @RestController
@@ -24,55 +21,42 @@ public class UserController {
     @Autowired
     private UserDao ser;
 
+    @GetMapping(path="customers/profile" ,params = {"emailId"})
+    public ResponseEntity<ResultResponse<Customer>> getCustomerProfile(String emailId){
+        return new ResponseEntity<>(service.getCustomerByEmailId(emailId),HttpStatus.OK);
+    }
+
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "customers")
-    public ResponseEntity<Response> registerCustomer(
+    public ResponseEntity<ResultResponse<Customer>> registerCustomer(
             @RequestBody Customer customer) {
 
-        return new ResponseEntity<>(new Response() {
-            private String status = "user created";
-            private Customer createdCustomer = service.registerCustomer(customer);
-
-            public String getStatus() {
-                return status;
-            }
-
-            public Customer getCreatedCustomer() {
-                return createdCustomer;
-            }
-        }, HttpStatus.CREATED);
+        return new ResponseEntity<>(service.registerCustomer(customer), HttpStatus.CREATED);
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "customers/{customerId}/address")
-    public ResponseEntity<Response> addAddress(@PathVariable int customerId, @RequestBody Address address) {
+    public ResponseEntity<ResultResponse> addAddress(@PathVariable int customerId, @RequestBody Address address) {
 
         service.addAddress(customerId, address);
 
-        return new ResponseEntity<>(new Response() {
-            private String status = "Address Added";
-
-            public String getStatus() {
-                return status;
-            }
-        }, HttpStatus.CREATED);
+        return new ResponseEntity<>(service.addAddress(customerId,address), HttpStatus.CREATED);
     }
+
+
+
+    //**************************************admin specific*********************************//
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "admin")
-    public ResponseEntity<Response> resgisterAdmin(@RequestBody Admin admin) {
+    public ResponseEntity<ResultResponse<Admin>> resgisterAdmin(@RequestBody Admin admin) {
 
-        return new ResponseEntity<>(new Response() {
-            private String status = "user created";
-            private Admin createdAdmin = service.registerAdmin(admin);
-
-            public String getStatus() {
-                return status;
-            }
-
-            public Admin getCreatedAdmin() {
-                return createdAdmin;
-            }
-        }, HttpStatus.CREATED);
+        return new ResponseEntity<>(service.registerAdmin(admin), HttpStatus.CREATED);
 
     }
+    @GetMapping(path="admin/profile" ,params = {"emailId"})
+    public ResponseEntity<ResultResponse<Admin>> getAdminProfile(String emailId){
+        return new ResponseEntity<>(service.getAdminByEmailId(emailId),HttpStatus.OK);
+    }
+
+
 /*
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE, path = "demo")
     public ResponseEntity<?> demo() {

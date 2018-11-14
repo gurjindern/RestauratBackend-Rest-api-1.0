@@ -32,9 +32,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/admin/**","/users/admin/**").hasRole("ADMIN")
-                .antMatchers("users/customers/**","/orders/{customerId}/**").hasRole("CUSTOMER")
+                .antMatchers(HttpMethod.POST,"users/customers/**","/orders/{customerId}/**").hasRole("CUSTOMER")
               ///  .antMatchers(HttpMethod.POST,"users/customers").permitAll()
-                .anyRequest().permitAll()
+               // .anyRequest().permitAll()
                 .and().csrf().disable().httpBasic().and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
 
