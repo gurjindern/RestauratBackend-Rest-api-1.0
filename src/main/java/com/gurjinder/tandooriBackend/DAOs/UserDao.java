@@ -43,7 +43,7 @@ public class UserDao {
 
 
         String insertCustomer = "insert into customers(id,First_name,Last_name,Phone_number,Email_id,Password) " +
-                "values(customer_seq.nextVal,?,?,?,?,?)";
+                "values(?,?,?,?,?,?)";
         synchronized (customerInsertionLock) {
             String existingEmail = null;
             try {
@@ -52,12 +52,14 @@ public class UserDao {
                         String.class);
             } catch (EmptyResultDataAccessException e) {
             }
+
+            int newId=template.queryForObject("select customer_seq.nextval from dual",Integer.class);
+            customer.setId(newId);
             if (existingEmail == null) {
-                template.update(insertCustomer, new Object[]{customer.getFirstName(),
+                template.update(insertCustomer, new Object[]{customer.getId(),customer.getFirstName(),
                         customer.getLastName(), customer.getPhoneNumber(),
                         customer.getEmailId().toUpperCase(), customer.getPassword()});
-                customer = template.queryForObject("select *  from customers where id=(select max(id) from customers)",
-                        new BeanPropertyRowMapper<Customer>(Customer.class));
+
 
             } else {
                 throw new UniqueIntegrityViolationException("email address already exist in records");
@@ -96,7 +98,7 @@ public class UserDao {
             }
             if (existingUsername == null) {
 
-               int newId=template.queryForObject("select categories_seq.nextval from dual",Integer.class);
+               int newId=template.queryForObject("select admin_seq.nextval from dual",Integer.class);
                 admin.setId(newId);
 
                 template.update(insertAdmin, new Object[]{admin.getId(),
