@@ -34,17 +34,8 @@ public class FoodCategoryDao {
 
 
     public FoodCategory addFoodCategory(FoodCategory category) {
-        int maxCategoryId;
-        try {
-            maxCategoryId = jdbcTemplate.queryForObject("select max(id) from categories", Integer.class);
-
-        } catch (EmptyResultDataAccessException e) {
-            maxCategoryId = 0;
-
-        } catch (NullPointerException e) {
-            maxCategoryId = 0;
-        }
-        category.setId(maxCategoryId + 1);
+       int newId=jdbcTemplate.queryForObject("select categories_seq.nextval from dual",Integer.class);
+        category.setId(newId);
         String insertStatement = "insert into categories(id,name,description) values(?,?,?)";
 
         jdbcTemplate.update(insertStatement, new Object[]{category.getId(), category.getName(), category.getDescription()});

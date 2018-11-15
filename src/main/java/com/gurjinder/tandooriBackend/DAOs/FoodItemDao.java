@@ -1,14 +1,14 @@
 package com.gurjinder.tandooriBackend.DAOs;
 
-import com.gurjinder.tandooriBackend.model.FoodCategory;
+//import com.gurjinder.tandooriBackend.model.FoodCategory;
 import com.gurjinder.tandooriBackend.model.FoodItem;
 import com.gurjinder.tandooriBackend.model.FoodItemRowMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.dao.EmptyResultDataAccessException;
+//import org.springframework.dao.DataIntegrityViolationException;
+//import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
+//import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.stereotype.Repository;
@@ -85,8 +85,7 @@ FoodItemDao {
         String query="select * from FOOD_ITEMS where id=?";
         return (FoodItem) jdbcTemplate.queryForObject(query,new Object[]{id},
                new FoodItemRowMapper());
-       // return (FoodItem) jdbcTemplate.queryForObject(query,new Object[]{id},
-         //       new BeanPropertyRowMapper<>(FoodItem.class));
+
     }
 
 
@@ -101,17 +100,9 @@ FoodItemDao {
     @Transactional
     public FoodItem addFoodItem(FoodItem foodItem) {
 
-        int maxItemId;
-        try {
-            maxItemId = jdbcTemplate.queryForObject("select max(id) from food_items", Integer.class);
-
-        } catch (EmptyResultDataAccessException e) {
-            maxItemId = 0;
-
-        } catch (NullPointerException e) {
-            maxItemId = 0;
-        }
-        foodItem.setId(maxItemId + 1);
+        String newIdStmt="select food_items_seq.nextvalue from dual";
+        int newId=jdbcTemplate.queryForObject(newIdStmt,Integer.class);
+        foodItem.setId(newId);
         String insertStatement = "insert into food_Items(id,name,price,description) values(?,?,?,?)";
         jdbcTemplate.update(insertStatement, new Object[]{foodItem.getId(), foodItem.getName(),
                 foodItem.getPrice(), foodItem.getDescription()});

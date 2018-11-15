@@ -16,12 +16,12 @@ public class UserDao {
 
     @Autowired
     private JdbcTemplate template;
-    private Object myLock;
-    private Object myLock1;
+    private Object customerInsertionLock;
+    private Object adminInsertionLock;
 
     public UserDao() {
-        myLock = new Object();
-        myLock1 = new Object();
+        customerInsertionLock = new Object();
+        adminInsertionLock = new Object();
 
     }
 
@@ -40,9 +40,11 @@ public class UserDao {
     }
 
     public Customer insertCustomer(Customer customer) {
+
+
         String insertCustomer = "insert into customers(id,First_name,Last_name,Phone_number,Email_id,Password) " +
                 "values(customer_seq.nextVal,?,?,?,?,?)";
-        synchronized (myLock) {
+        synchronized (customerInsertionLock) {
             String existingEmail = null;
             try {
                 existingEmail = (String) template.queryForObject("select email_id from customers where email_id like ?",
@@ -81,7 +83,10 @@ public class UserDao {
 
         String insertAdmin = "insert into admins(id,Email_id,First_name,Last_name,Phone_number,Password) " +
                 "values(?,?,?,?,?,?)";
-        synchronized (myLock1) {
+
+
+
+        synchronized (adminInsertionLock) {
             String existingUsername = null;
             try {
                 existingUsername = (String) template.queryForObject("select email_id from admins where Email_id like ?",
@@ -91,15 +96,8 @@ public class UserDao {
             }
             if (existingUsername == null) {
 
-                int lastAdminId;
-                try {
-                    lastAdminId = (int) template.queryForObject("select max(id) from admins", Integer.class);
-                } catch (EmptyResultDataAccessException e) {
-                    lastAdminId = 0;
-                } catch (NullPointerException e) {
-                    lastAdminId = 0;
-                }
-                admin.setId(lastAdminId + 1);
+               int newId=template.queryForObject("select categories_seq.nextval from dual",Integer.class);
+                admin.setId(newId);
 
                 template.update(insertAdmin, new Object[]{admin.getId(),
                         admin.getEmailId().toUpperCase(), admin.getFirstName(),

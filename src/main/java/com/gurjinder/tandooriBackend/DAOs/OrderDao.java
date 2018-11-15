@@ -21,35 +21,17 @@ public class OrderDao {
     @Autowired
     JdbcTemplate template;
 
-    private Object odereSubmissionLock;
 
-
-    public OrderDao() {
-
-        odereSubmissionLock = new Object();
-    }
-
-    public OrderDao(JdbcTemplate template) {
-        this.template = template;
-    }
     @Transactional
     public Order submitOrder(int cutomerId, Order order) {
         String insertOrder = "insert into orders(id,time_submitted,customer_id) values(?,?,?)";
         String insertItemsInOrder = "insert into items_in_order(id,order_id,item_id) values (items_in_order_seq.nextVal,?,?)";
-        String getInsertedOrder = "select *  from orders where id=(select max(id) from orders";
+        String getNextIdStatement = "select orders_seq.nextVal from dual";
 
-        synchronized (odereSubmissionLock) {
-            int lastOrderId;
-            try {
-                lastOrderId = (int) template.queryForObject("select max(id) from orders", Integer.class);
-            } catch (EmptyResultDataAccessException e) {
-                lastOrderId = 0;
-            } catch (NullPointerException e) {
-                lastOrderId = 0;
-            }
-            order.setId(lastOrderId + 1);
+        int newOrderId=(int)template.queryForObject(getNextIdStatement,Integer.class);
+            order.setId(newOrderId);
             template.update(insertOrder, new Object[]{order.getId(), order.getTimeSubmitted(), cutomerId});
-            }
+
 
             template.batchUpdate(insertItemsInOrder, new BatchPreparedStatementSetter() {
                 @Override
@@ -70,7 +52,7 @@ public class OrderDao {
 
     public List<Order> fetchOrderByCustomer(int customerId) {
         List<Order> orders;
-        String query = "Select  * from orders where customer_id=?";
+        String query = "Select  * from orders where customer_id=? order by id desc";
         orders = template.query(query, new Object[]{customerId}, new BeanPropertyRowMapper<>(Order.class));
         return orders;
     }
