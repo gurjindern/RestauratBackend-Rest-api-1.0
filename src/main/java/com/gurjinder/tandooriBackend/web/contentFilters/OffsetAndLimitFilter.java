@@ -1,4 +1,4 @@
-package com.gurjinder.tandooriBackend.web.filters;
+package com.gurjinder.tandooriBackend.web.contentFilters;
 
 public class OffsetAndLimitFilter {
 

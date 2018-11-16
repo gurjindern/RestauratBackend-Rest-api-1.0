@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -32,13 +33,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/admin/**","/users/admin/**").hasRole("ADMIN")
-                .antMatchers(HttpMethod.POST,"users/customers/**","/orders/{customerId}/**").hasRole("CUSTOMER")
-              ///  .antMatchers(HttpMethod.POST,"users/customers").permitAll()
-               // .anyRequest().permitAll()
-                .and().csrf().disable().httpBasic().and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+               // .antMatchers("/users/customers/**","/orders/{customerId}/**").hasRole("CUSTOMER")
+                .anyRequest().permitAll()
+                .and().csrf().disable()
+                .httpBasic()
+                .and()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
 
     }
 
-
+    @Override
+    public void configure(WebSecurity web) throws  Exception{
+        web.ignoring().antMatchers(HttpMethod.POST,"/users/customers");
+    }
 }

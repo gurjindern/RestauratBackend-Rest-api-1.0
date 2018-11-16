@@ -8,16 +8,27 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Base64Utils;
 
 import java.util.Date;
+import java.util.StringTokenizer;
 
 @Service
 public class UserService {
 
     @Autowired
     private UserDao userDao;
-    public ResultResponse<Customer> getCustomerByEmailId(String emailId){
-        Customer customer=userDao.getCustomerProfileByEmailId(emailId);
+    public ResultResponse<Customer> getCustomerProfile(String authToken){
+
+        authToken=authToken.replaceFirst("Basic ","");
+        byte[] decodeToByteArray= Base64Utils.decodeFromString(authToken);
+        String decodedAuthToken=new String(decodeToByteArray);
+
+        StringTokenizer tokenizer=new StringTokenizer(decodedAuthToken,":");
+        String username=tokenizer.nextToken().toUpperCase();
+
+
+        Customer customer=userDao.getCustomerProfile(username);
         customer.setPassword(null);
         return new ResultResponse<>("success", new Date(),customer);
 
@@ -45,10 +56,19 @@ public class UserService {
         return new ResultResponse<>("created",new Date(),userDao.insertAdmin(admin));
     }
 
-    public ResultResponse<Admin> getAdminByEmailId(String emailId){
-        Admin admin=userDao.getAdminProfileByEmailId(emailId);
+    public ResultResponse<Admin> getAdminProfile(String authToken){
+        authToken=authToken.replaceFirst("Basic ","");
+        byte[] decodeToByteArray= Base64Utils.decodeFromString(authToken);
+        String decodedAuthToken=new String(decodeToByteArray);
+
+        StringTokenizer tokenizer=new StringTokenizer(decodedAuthToken,":");
+        String username=tokenizer.nextToken().toUpperCase();
+
+
+        Admin admin=userDao.getAdminProfile(username);
         admin.setPassword(null);
         return new ResultResponse<>("success", new Date(),admin);
+
 
     }
 

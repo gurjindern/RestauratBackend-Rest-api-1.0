@@ -26,7 +26,7 @@ public class MyUserDetail implements UserDetailsService {
     public UserDetails loadUserByUsername(String emailId) throws UsernameNotFoundException {
 
         RegisteredUser user = userDao.findUser(emailId.toUpperCase());
-        System.err.println("i am running");
+        //System.err.println("i am running");
         if (user != null) {
             List<GrantedAuthority> authorities = new ArrayList<>();
             authorities.add(new SimpleGrantedAuthority(user.getRole().toUpperCase()));

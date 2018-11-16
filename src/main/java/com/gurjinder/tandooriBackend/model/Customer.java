@@ -24,4 +24,12 @@ public class Customer extends RegisteredUser {
     public void setAddress(List<Address> address) {
         this.address = address;
     }
+
+    @Override
+    public String toString() {
+        return "Customer{" +
+                "address=" + address +
+                ", numberOfOrders=" + numberOfOrders +
+                '}';
+    }
 }

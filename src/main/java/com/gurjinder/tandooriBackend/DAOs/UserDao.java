@@ -1,7 +1,6 @@
 package com.gurjinder.tandooriBackend.DAOs;
 
 
-import com.gurjinder.tandooriBackend.exceptions.NoContentException;
 import com.gurjinder.tandooriBackend.exceptions.UniqueIntegrityViolationException;
 import com.gurjinder.tandooriBackend.model.*;
 
@@ -25,15 +24,16 @@ public class UserDao {
 
     }
 
-    public Customer getCustomerProfileByEmailId(String email){
+    public Customer getCustomerProfile(String username){
         Customer customer;
 
         try {
-            customer = (Customer) template.queryForObject("select * from customers where email_id like ?", new Object[]{email.toUpperCase()},
+            customer = (Customer) template.queryForObject("select * from customers where email_id like ?",
+                    new Object[]{username},
                     new BeanPropertyRowMapper<>(Customer.class));
         }
         catch(EmptyResultDataAccessException e){
-            throw new NoContentException("no user found related to this email id:: "+email);
+            customer=null;
         }
         return  customer;
 
@@ -117,14 +117,15 @@ public class UserDao {
         return admin;
 
     }
-    public Admin getAdminProfileByEmailId(String email){
+    public Admin getAdminProfile(String username){
          Admin admin;
         try {
-            admin = (Admin) template.queryForObject("select * from admin where email_id like ?", new Object[]{email.toUpperCase()},
+            admin = (Admin) template.queryForObject("select * from admin where email_id like ?", new Object[]{username.toUpperCase()},
                     new BeanPropertyRowMapper<>(Admin.class));
         }
         catch(EmptyResultDataAccessException e){
-            throw new NoContentException("no user found related to this email id:: "+email);
+
+            admin=null;
         }
         return  admin;
 

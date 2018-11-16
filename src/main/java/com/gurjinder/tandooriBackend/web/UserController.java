@@ -21,9 +21,13 @@ public class UserController {
     @Autowired
     private UserDao ser;
 
-    @GetMapping(path="customers/profile" ,params = {"emailId"})
-    public ResponseEntity<ResultResponse<Customer>> getCustomerProfile(String emailId){
-        return new ResponseEntity<>(service.getCustomerByEmailId(emailId),HttpStatus.OK);
+    @GetMapping(path="customers/profile")
+    public ResponseEntity<ResultResponse<Customer>> getCustomerProfile(@RequestHeader(name ="Authorization") String authToken){
+        System.err.println(authToken);
+        ResultResponse<Customer> response=service.getCustomerProfile(authToken);
+    //    System.err.println(response.getResult().toString());
+        System.err.println("sgjvifjwe");
+        return new ResponseEntity<>(response,HttpStatus.OK);
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "customers")
@@ -51,21 +55,21 @@ public class UserController {
         return new ResponseEntity<>(service.registerAdmin(admin), HttpStatus.CREATED);
 
     }
-    @GetMapping(path="admin/profile" ,params = {"emailId"})
-    public ResponseEntity<ResultResponse<Admin>> getAdminProfile(String emailId){
-        return new ResponseEntity<>(service.getAdminByEmailId(emailId),HttpStatus.OK);
+    @GetMapping(path="admin/profile" )
+    public ResponseEntity<ResultResponse<Admin>> getAdminProfile(@RequestHeader(name ="Authorization") String authToken){
+        return new ResponseEntity<>(service.getAdminProfile(authToken),HttpStatus.OK);
     }
 
 
-/*
+
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE, path = "demo")
     public ResponseEntity<?> demo() {
 
         System.err.println("i am here");
-        return new ResponseEntity<>(ser.findUser("wolverine"), HttpStatus.OK);
+        return new ResponseEntity<>(ser.findUser("GURJINDERN74"), HttpStatus.OK);
         //  return new ResponseEntity<>(new MyUserDetail(ser).loadUserByUsername("wolverine"),HttpStatus.OK);
         // return new ResponseEntity<>(new MyUserDetail().loadUserByUsername(""),HttpStatus.OK);
     }
 
-*/
+
 }
