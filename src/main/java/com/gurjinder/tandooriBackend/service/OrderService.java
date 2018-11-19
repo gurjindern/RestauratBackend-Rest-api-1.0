@@ -14,14 +14,14 @@ public class OrderService {
     private OrderDao orderDao;
 
 
-    public Order submitOrder(int customerId, Order order) {
+    public Order submitOrder(String customerId, Order order) {
 
         order.setTimeSubmitted(System.currentTimeMillis() / 1000L);
         return orderDao.submitOrder(customerId, order);
 
     }
 
-    public ResultResponse<List<Order>> getOrdersbyCustomer(int customerId) {
+    public ResultResponse<List<Order>> getOrdersbyCustomer(String customerId) {
 
         return new ResultResponse<>("success", new Date(), orderDao.fetchOrderByCustomer(customerId));
 

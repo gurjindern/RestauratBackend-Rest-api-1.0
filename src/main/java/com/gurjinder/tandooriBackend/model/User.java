@@ -9,7 +9,7 @@ import javax.validation.constraints.Pattern;
 @JsonInclude(JsonInclude.Include.NON_DEFAULT)
 public abstract class User {
 
-    private int id;
+
     @NotNull
     private String firstName;
     @NotNull
@@ -24,13 +24,6 @@ public abstract class User {
 
 
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public String getFirstName() {
         return firstName;

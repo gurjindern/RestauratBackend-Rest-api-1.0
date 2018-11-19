@@ -11,7 +11,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Base64Utils;
 
 import java.util.Date;
+import java.util.List;
 import java.util.StringTokenizer;
+import java.util.UUID;
 
 @Service
 public class UserService {
@@ -20,12 +22,7 @@ public class UserService {
     private UserDao userDao;
     public ResultResponse<Customer> getCustomerProfile(String authToken){
 
-        authToken=authToken.replaceFirst("Basic ","");
-        byte[] decodeToByteArray= Base64Utils.decodeFromString(authToken);
-        String decodedAuthToken=new String(decodeToByteArray);
-
-        StringTokenizer tokenizer=new StringTokenizer(decodedAuthToken,":");
-        String username=tokenizer.nextToken().toUpperCase();
+        String username=MyUtilities.getUsersnameFormAuthToken(authToken);
 
 
         Customer customer=userDao.getCustomerProfile(username);
@@ -37,13 +34,21 @@ public class UserService {
     public ResultResponse<Customer> registerCustomer(Customer customer) {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         customer.setPassword(encoder.encode(customer.getPassword()));
+        UUID uuid = UUID.randomUUID();
+        customer.setId(uuid.toString());
         return new ResultResponse<>("created",new Date(),userDao.insertCustomer(customer));
 
     }
 
-    public ResultResponse  addAddress(int customerId, Address address) {
+    public ResultResponse  addAddress(String customerId, Address address) {
+
         userDao.insertAddress(customerId, address);
         return new ResultResponse("created",new Date());
+    }
+
+    public ResultResponse<List<Address>> getAddresses(String cutomerId){
+
+        return new ResultResponse<>("success",new Date(),userDao.getAddresses(cutomerId));
     }
 
 
@@ -53,18 +58,14 @@ public class UserService {
     public ResultResponse<Admin> registerAdmin(Admin admin) {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         admin.setPassword(encoder.encode(admin.getPassword()));
+        UUID uuid = UUID.randomUUID();
+        admin.setId(uuid.toString());
+
         return new ResultResponse<>("created",new Date(),userDao.insertAdmin(admin));
     }
 
     public ResultResponse<Admin> getAdminProfile(String authToken){
-        authToken=authToken.replaceFirst("Basic ","");
-        byte[] decodeToByteArray= Base64Utils.decodeFromString(authToken);
-        String decodedAuthToken=new String(decodeToByteArray);
-
-        StringTokenizer tokenizer=new StringTokenizer(decodedAuthToken,":");
-        String username=tokenizer.nextToken().toUpperCase();
-
-
+        String username=MyUtilities.getUsersnameFormAuthToken(authToken);
         Admin admin=userDao.getAdminProfile(username);
         admin.setPassword(null);
         return new ResultResponse<>("success", new Date(),admin);

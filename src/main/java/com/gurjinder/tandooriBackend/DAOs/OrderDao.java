@@ -23,8 +23,8 @@ public class OrderDao {
 
 
     @Transactional
-    public Order submitOrder(int cutomerId, Order order) {
-        String insertOrder = "insert into orders(id,time_submitted,customer_id) values(?,?,?)";
+    public Order submitOrder(String cutomerId, Order order) {
+        String insertOrder = "insert into orders(id,time_submitted,customer_id) values(?,?,(select id from customers where unique_identifier like ?))";
         String insertItemsInOrder = "insert into items_in_order(id,order_id,item_id) values (items_in_order_seq.nextVal,?,?)";
         String getNextIdStatement = "select orders_seq.nextVal from dual";
 
@@ -50,9 +50,9 @@ public class OrderDao {
 
     }
 
-    public List<Order> fetchOrderByCustomer(int customerId) {
+    public List<Order> fetchOrderByCustomer(String customerId) {
         List<Order> orders;
-        String query = "Select  * from orders where customer_id=? order by id desc";
+        String query = "Select  * from orders where customer_id=(select id from customers where unique_identifier like ?) order by id desc";
         orders = template.query(query, new Object[]{customerId}, new BeanPropertyRowMapper<>(Order.class));
         return orders;
     }

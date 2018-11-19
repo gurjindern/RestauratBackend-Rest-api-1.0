@@ -10,6 +10,8 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public class UserDao {
 
@@ -42,8 +44,8 @@ public class UserDao {
     public Customer insertCustomer(Customer customer) {
 
 
-        String insertCustomer = "insert into customers(id,First_name,Last_name,Phone_number,Email_id,Password) " +
-                "values(?,?,?,?,?,?)";
+        String insertCustomer = "insert into customers(id,unique_identifier,First_name,Last_name,Phone_number,Email_id,Password) " +
+                "values(?,?,?,?,?,?,?)";
         synchronized (customerInsertionLock) {
             String existingEmail = null;
             try {
@@ -53,10 +55,10 @@ public class UserDao {
             } catch (EmptyResultDataAccessException e) {
             }
 
-            int newId=template.queryForObject("select customer_seq.nextval from dual",Integer.class);
-            customer.setId(newId);
+            int newPrimaryId=template.queryForObject("select customer_seq.nextval from dual",Integer.class);
+
             if (existingEmail == null) {
-                template.update(insertCustomer, new Object[]{customer.getId(),customer.getFirstName(),
+                template.update(insertCustomer, new Object[]{newPrimaryId,customer.getId(),customer.getFirstName(),
                         customer.getLastName(), customer.getPhoneNumber(),
                         customer.getEmailId().toUpperCase(), customer.getPassword()});
 
@@ -66,16 +68,22 @@ public class UserDao {
 
             }
         }
+        customer.setPassword(null);
         return customer;
     }
 
-    public void insertAddress(int customerId, Address address) {
+    public void insertAddress(String customerId, Address address) {
         String insertAddress = "insert into customer_address(id,building_Number,Street_name,apt,postal_code,city,province,customer_id) " +
-                "values(address_seq.nextVal,?,?,?,?,?,?,?)";
+                "values(address_seq.nextVal,?,?,?,?,?,?,(select id from customers where unique_identifier like ?))";
 
         template.update(insertAddress, new Object[]{address.getBuildingNumber(),
                 address.getStreetName(), address.getApt(), address.getPostalCode(), address.getCity(),
                 address.getProvince(), customerId});
+
+    }
+    public List<Address> getAddresses(String customerId){
+        String stmt="select * from customer_address where customer_id=(select id from customers where unique_identifier like ?)";
+        return template.query(stmt,new Object[]{customerId},new BeanPropertyRowMapper<>(Address.class));
 
     }
 
@@ -84,7 +92,7 @@ public class UserDao {
     public Admin insertAdmin(Admin admin) {
 
         String insertAdmin = "insert into admins(id,Email_id,First_name,Last_name,Phone_number,Password) " +
-                "values(?,?,?,?,?,?)";
+                "values(?,?,?,?,?,?,?)";
 
 
 
@@ -98,10 +106,10 @@ public class UserDao {
             }
             if (existingUsername == null) {
 
-               int newId=template.queryForObject("select admin_seq.nextval from dual",Integer.class);
-                admin.setId(newId);
+               int newPrimaryId=template.queryForObject("select admin_seq.nextval from dual",Integer.class);
 
-                template.update(insertAdmin, new Object[]{admin.getId(),
+
+                template.update(insertAdmin, new Object[]{newPrimaryId,admin.getId(),
                         admin.getEmailId().toUpperCase(), admin.getFirstName(),
                         admin.getLastName(), admin.getPhoneNumber(),
                         admin.getPassword()});

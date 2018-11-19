@@ -3,11 +3,21 @@ package com.gurjinder.tandooriBackend.model;
 import javax.validation.constraints.NotNull;
 
 public class RegisteredUser extends User {
+
+    private String id;
     @NotNull
     private String password;
 
     private String role;
     private boolean active;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getPassword() {
         return password;

@@ -25,7 +25,7 @@ public class OrderController {
 
 
     @PostMapping(consumes = APPLICATION_JSON_VALUE, path = "{customerId}/")
-    public ResponseEntity<Response> submitOrder(@PathVariable int customerId, @RequestBody Order order) {
+    public ResponseEntity<Response> submitOrder(@PathVariable String customerId, @RequestBody Order order) {
 
         return new ResponseEntity<>(new Response() {
             private String status = "order accepted";
@@ -43,9 +43,11 @@ public class OrderController {
     }
 
     @GetMapping(produces = APPLICATION_JSON_VALUE, path = "{customerId}")
-    public ResponseEntity<ResultResponse<List<Order>>> ordersByCustomer(@PathVariable int customerId) {
+    public ResponseEntity<ResultResponse<List<Order>>> ordersByCustomer(@PathVariable String customerId) {
 
         return new ResponseEntity<>(service.getOrdersbyCustomer(customerId), HttpStatus.OK);
     }
 
 }
+
+

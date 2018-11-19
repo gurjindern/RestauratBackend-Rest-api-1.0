@@ -12,6 +12,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 @RestController
 @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE, path = "users")
@@ -25,8 +27,6 @@ public class UserController {
     public ResponseEntity<ResultResponse<Customer>> getCustomerProfile(@RequestHeader(name ="Authorization") String authToken){
         System.err.println(authToken);
         ResultResponse<Customer> response=service.getCustomerProfile(authToken);
-    //    System.err.println(response.getResult().toString());
-        System.err.println("sgjvifjwe");
         return new ResponseEntity<>(response,HttpStatus.OK);
     }
 
@@ -38,11 +38,16 @@ public class UserController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, path = "customers/{customerId}/address")
-    public ResponseEntity<ResultResponse> addAddress(@PathVariable int customerId, @RequestBody Address address) {
+    public ResponseEntity<ResultResponse> addAddress(@PathVariable String customerId, @RequestBody Address address) {
 
         service.addAddress(customerId, address);
 
         return new ResponseEntity<>(service.addAddress(customerId,address), HttpStatus.CREATED);
+    }
+    @GetMapping( path = "customers/{customerId}/address")
+    public ResponseEntity<ResultResponse<List<Address>>> getAddresses(@PathVariable String customerId){
+
+        return new ResponseEntity<>(service.getAddresses(customerId), HttpStatus.CREATED);
     }
 
 
@@ -60,10 +65,10 @@ public class UserController {
         return new ResponseEntity<>(service.getAdminProfile(authToken),HttpStatus.OK);
     }
 
+/*
 
-
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE, path = "demo")
-    public ResponseEntity<?> demo() {
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE, path = "test")
+    public ResponseEntity<?> test() {
 
         System.err.println("i am here");
         return new ResponseEntity<>(ser.findUser("GURJINDERN74"), HttpStatus.OK);
@@ -71,5 +76,5 @@ public class UserController {
         // return new ResponseEntity<>(new MyUserDetail().loadUserByUsername(""),HttpStatus.OK);
     }
 
-
+*/
 }
